@@ -2,29 +2,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-    public class LobbyPlayerCard : MonoBehaviour
+public class LobbyPlayerCard : MonoBehaviour
+{
+    [SerializeField] private GameObject Player;
+
+    //[SerializeField] private TMP_Text playerDisplayNameText;
+    //[SerializeField] private Toggle isReadyToggle;
+
+    public void UpdateDisplay(LobbyPlayerState lobbyPlayerState)
     {
-        [Header("Panels")]
-        [SerializeField] private GameObject waitingForPlayerPanel;
-        [SerializeField] private GameObject playerDataPanel;
-
-        [Header("Data Display")]
-        [SerializeField] private TMP_Text playerDisplayNameText;
-        [SerializeField] private Image selectedCharacterImage;
-        [SerializeField] private Toggle isReadyToggle;
-
-        public void UpdateDisplay(LobbyPlayerState lobbyPlayerState)
-        {
-            playerDisplayNameText.text = lobbyPlayerState.ClientId.ToString();
-            isReadyToggle.isOn = lobbyPlayerState.IsReady;
-
-            waitingForPlayerPanel.SetActive(false);
-            playerDataPanel.SetActive(true);
-        }
-
-        public void DisableDisplay()
-        {
-            waitingForPlayerPanel.SetActive(true);
-            playerDataPanel.SetActive(false);
-        }
+        Debug.Log(lobbyPlayerState.IsReady);
+        Player.SetActive(true);
+        //playerDisplayNameText.text = lobbyPlayerState.ClientId.ToString();
+        //isReadyToggle.isOn = lobbyPlayerState.IsReady;
     }
+
+    public void DisableDisplay()
+    {
+        Player.SetActive(false);
+    }
+}

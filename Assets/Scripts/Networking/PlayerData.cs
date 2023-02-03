@@ -1,11 +1,11 @@
 
-    public struct PlayerData
-    {
-        public ulong ClientId { get; private set; }
+public struct PlayerData
+{
+    public ulong ClientId { get; private set; }
 
-        public PlayerData(ulong clientId)
-        {
-            ClientId = clientId;
-        }
+    public PlayerData(ulong clientId)
+    {
+        ClientId = clientId;
     }
+}
 
