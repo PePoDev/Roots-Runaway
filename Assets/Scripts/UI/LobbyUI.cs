@@ -2,37 +2,52 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using Unity.Collections;
+using TMPro;
 
-public struct LobbyPlayerState : INetworkSerializable, IEquatable<LobbyPlayerState> {
+public struct LobbyPlayerState : INetworkSerializable, IEquatable<LobbyPlayerState>
+{
     public ulong ClientId;
     public bool IsReady;
+    public FixedString32Bytes PlayerName;
 
-    public LobbyPlayerState(ulong clientId, bool isReady) {
+    public LobbyPlayerState(ulong clientId, bool isReady, FixedString32Bytes playerName)
+    {
         ClientId = clientId;
         IsReady = isReady;
+        PlayerName = playerName;
     }
 
-    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
         serializer.SerializeValue(ref ClientId);
         serializer.SerializeValue(ref IsReady);
+        serializer.SerializeValue(ref PlayerName);
     }
 
-    public bool Equals(LobbyPlayerState other) {
-        return ClientId == other.ClientId && IsReady == other.IsReady;
+    public bool Equals(LobbyPlayerState other)
+    {
+        return ClientId == other.ClientId && IsReady == other.IsReady && PlayerName.Equals(other.PlayerName);
     }
 }
 
 
-public class LobbyUI : NetworkBehaviour {
-    [SerializeField] private LobbyPlayerCard[] lobbyPlayerCards;
+public class LobbyUI : NetworkBehaviour
+{
+    public LobbyPlayerCard[] lobbyPlayerCards;
+    public Toggle isReadyToggle;
+    public TMP_Text timeCounter;
 
     private NetworkList<LobbyPlayerState> lobbyPlayers;
 
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
         lobbyPlayers = new NetworkList<LobbyPlayerState>();
+    }
 
+    public override void OnNetworkSpawn()
+    {
         if (IsClient)
         {
             lobbyPlayers.OnListChanged += HandleLobbyPlayersStateChanged;
@@ -89,7 +104,8 @@ public class LobbyUI : NetworkBehaviour {
 
         lobbyPlayers.Add(new LobbyPlayerState(
             clientId,
-            false
+            false,
+            playerData.Value.PlayerName
         ));
     }
 
@@ -114,7 +130,8 @@ public class LobbyUI : NetworkBehaviour {
             {
                 lobbyPlayers[i] = new LobbyPlayerState(
                     lobbyPlayers[i].ClientId,
-                    !lobbyPlayers[i].IsReady
+                    !lobbyPlayers[i].IsReady,
+                    lobbyPlayers[i].PlayerName
                 );
             }
         }
@@ -159,9 +176,22 @@ public class LobbyUI : NetworkBehaviour {
             }
         }
 
-        if (IsHost)
+        if (IsEveryoneReady())
         {
+            isReadyToggle.interactable = false;
+            StartCoroutine(Cooldown());
         }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            timeCounter.text = (5-i).ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        StartGameServerRpc();
     }
 }
 

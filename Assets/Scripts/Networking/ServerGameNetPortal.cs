@@ -85,15 +85,13 @@ public class ServerGameNetPortal : MonoBehaviour
     public void StartGame()
     {
         gameInProgress = true;
-        //TODO: replace it with Game scene
-        NetworkManager.Singleton.SceneManager.LoadScene("Scene_Main", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 
     public void EndRound()
     {
         gameInProgress = false;
-        //TODO: replace it with Lobby
-        NetworkManager.Singleton.SceneManager.LoadScene("Scene_Lobby", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
     }
 
     private void HandleNetworkReadied()
@@ -104,7 +102,7 @@ public class ServerGameNetPortal : MonoBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
         gameNetPortal.OnClientSceneChanged += HandleClientSceneChanged;
 
-
+        NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
         if (NetworkManager.Singleton.IsHost)
         {
             clientSceneMap[NetworkManager.Singleton.LocalClientId] = SceneManager.GetActiveScene().buildIndex;
@@ -145,8 +143,7 @@ public class ServerGameNetPortal : MonoBehaviour
         NetworkManager.Singleton.Shutdown();
 
         ClearData();
-        //TODO: replace it with main menu
-        SceneManager.LoadScene("Scene_Menu");
+        SceneManager.LoadScene("Menu");
     }
 
     private void HandleServerStarted()
@@ -154,8 +151,9 @@ public class ServerGameNetPortal : MonoBehaviour
         if (!NetworkManager.Singleton.IsHost) { return; }
 
         string clientGuid = Guid.NewGuid().ToString();
+        string playerName = PlayerPrefs.GetString("PlayerName");
 
-        clientData.Add(clientGuid, new PlayerData(NetworkManager.Singleton.LocalClientId));
+        clientData.Add(clientGuid, new PlayerData(NetworkManager.Singleton.LocalClientId, playerName));
         clientIdToGuid.Add(NetworkManager.Singleton.LocalClientId, clientGuid);
     }
 
@@ -173,7 +171,7 @@ public class ServerGameNetPortal : MonoBehaviour
         // The client identifier to be authenticated
         var clientId = request.ClientNetworkId;
 
-        Debug.Log("ApprovalCheck" + clientId);
+        Debug.Log("ApprovalCheck: " + clientId);
         // Additional connection data defined by user code
         var connectionData = request.Payload;
 
@@ -220,7 +218,7 @@ public class ServerGameNetPortal : MonoBehaviour
         {
             clientSceneMap[clientId] = connectionPayload.clientScene;
             clientIdToGuid[clientId] = connectionPayload.clientGUID;
-            clientData[connectionPayload.clientGUID] = new PlayerData(clientId);
+            clientData[connectionPayload.clientGUID] = new PlayerData(clientId, connectionPayload.playerName);
         }
 
         response.Approved = true;

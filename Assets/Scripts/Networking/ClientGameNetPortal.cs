@@ -59,9 +59,12 @@ public class ClientGameNetPortal : MonoBehaviour
         {
             clientGUID = Guid.NewGuid().ToString(),
             clientScene = SceneManager.GetActiveScene().buildIndex,
-        });
+            playerName = PlayerPrefs.GetString("PlayerName")
+
+    });
 
         byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
+
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 
@@ -85,7 +88,7 @@ public class ClientGameNetPortal : MonoBehaviour
 
         HandleClientDisconnect(NetworkManager.Singleton.LocalClientId);
 
-        SceneManager.LoadScene("Scene_Menu");
+        SceneManager.LoadScene("Menu");
     }
 
     private void HandleConnectionFinished(ConnectStatus status)
@@ -111,14 +114,14 @@ public class ClientGameNetPortal : MonoBehaviour
         {
             gameNetPortal.OnUserDisconnectRequested -= HandleUserDisconnectRequested;
 
-            if (SceneManager.GetActiveScene().name != "Scene_Menu")
+            if (SceneManager.GetActiveScene().name != "Menu")
             {
                 if (!DisconnectReason.HasTransitionReason)
                 {
                     DisconnectReason.SetDisconnectReason(ConnectStatus.GenericDisconnect);
                 }
 
-                SceneManager.LoadScene("Scene_Menu");
+                SceneManager.LoadScene("Menu");
             }
             else
             {
