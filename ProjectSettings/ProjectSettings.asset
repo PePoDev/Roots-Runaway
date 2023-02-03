@@ -707,11 +707,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: 63f5e2e0-c21d-4107-8978-2d34e26434cb
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: GGJ-2023
+  organizationId: pepodev
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
