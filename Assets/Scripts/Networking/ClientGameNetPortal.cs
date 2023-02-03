@@ -59,9 +59,11 @@ public class ClientGameNetPortal : MonoBehaviour
         {
             clientGUID = Guid.NewGuid().ToString(),
             clientScene = SceneManager.GetActiveScene().buildIndex,
-            playerName = PlayerPrefs.GetString("PlayerName")
+            playerName = PlayerPrefs.GetString("PlayerName"),
+            seletedCharacterId = PlayerPrefs.GetInt("SeletedCharacterId")
 
-    });
+
+        }); ;
 
         byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
 

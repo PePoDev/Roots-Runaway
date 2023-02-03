@@ -11,12 +11,14 @@ public struct LobbyPlayerState : INetworkSerializable, IEquatable<LobbyPlayerSta
     public ulong ClientId;
     public bool IsReady;
     public FixedString32Bytes PlayerName;
+    public ulong SeletedCharacterId;
 
-    public LobbyPlayerState(ulong clientId, bool isReady, FixedString32Bytes playerName)
+    public LobbyPlayerState(ulong clientId, bool isReady, FixedString32Bytes playerName, ulong seletedCharacterId)
     {
         ClientId = clientId;
         IsReady = isReady;
         PlayerName = playerName;
+        SeletedCharacterId = seletedCharacterId;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -105,7 +107,8 @@ public class LobbyUI : NetworkBehaviour
         lobbyPlayers.Add(new LobbyPlayerState(
             clientId,
             false,
-            playerData.Value.PlayerName
+            playerData.Value.PlayerName,
+            playerData.Value.SeletedCharacterId
         ));
     }
 
@@ -131,7 +134,8 @@ public class LobbyUI : NetworkBehaviour
                 lobbyPlayers[i] = new LobbyPlayerState(
                     lobbyPlayers[i].ClientId,
                     !lobbyPlayers[i].IsReady,
-                    lobbyPlayers[i].PlayerName
+                    lobbyPlayers[i].PlayerName,
+                    lobbyPlayers[i].SeletedCharacterId
                 );
             }
         }
