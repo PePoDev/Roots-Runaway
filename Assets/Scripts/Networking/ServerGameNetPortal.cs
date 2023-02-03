@@ -152,8 +152,9 @@ public class ServerGameNetPortal : MonoBehaviour
 
         string clientGuid = Guid.NewGuid().ToString();
         string playerName = PlayerPrefs.GetString("PlayerName");
+        int seletedCharacterId = PlayerPrefs.GetInt("SeletedCharacterId");
 
-        clientData.Add(clientGuid, new PlayerData(NetworkManager.Singleton.LocalClientId, playerName));
+        clientData.Add(clientGuid, new PlayerData(NetworkManager.Singleton.LocalClientId, playerName, (ulong)seletedCharacterId));
         clientIdToGuid.Add(NetworkManager.Singleton.LocalClientId, clientGuid);
     }
 
@@ -218,7 +219,7 @@ public class ServerGameNetPortal : MonoBehaviour
         {
             clientSceneMap[clientId] = connectionPayload.clientScene;
             clientIdToGuid[clientId] = connectionPayload.clientGUID;
-            clientData[connectionPayload.clientGUID] = new PlayerData(clientId, connectionPayload.playerName);
+            clientData[connectionPayload.clientGUID] = new PlayerData(clientId, connectionPayload.playerName, (ulong)connectionPayload.seletedCharacterId);
         }
 
         response.Approved = true;
