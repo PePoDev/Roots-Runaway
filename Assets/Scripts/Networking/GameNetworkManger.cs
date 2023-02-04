@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,6 +24,19 @@ public class GameNetworkManger : NetworkBehaviour
     private Transform[] m_PlayerSpawnPoints;
 
     public bool InitialSpawnDone { get; private set; }
+
+    public TMP_Text eyeCooldown;
+
+    public void UpdateEyeCoolDown(int n)
+    {
+        if (n <= 0)
+        {
+            eyeCooldown.text = "F";
+            return;
+        }
+
+        eyeCooldown.text = n.ToString();
+    }
 
     public override void OnNetworkSpawn() {
         CurrentPlayerLive.OnValueChanged += OnSomeValueChanged;

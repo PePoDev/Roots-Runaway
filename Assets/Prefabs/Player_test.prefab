@@ -159,7 +159,7 @@ MonoBehaviour:
   rb: {fileID: 6649937558935605663}
   animator: {fileID: 6564003398762901404}
   template: {fileID: 1006601266409108966}
-  effect: {fileID: 8100897583060972062, guid: 98a65ffdc3b9c4742bade444da271373, type: 3}
+  effect: {fileID: 2428297859648585745}
   AllCharacterModel:
   - {fileID: 4586295932603434507, guid: 9585e6d6bfa9516469407dd87ee17dd2, type: 3}
   - {fileID: 2035083545422830241, guid: ba7c124f48cd34a48941728ec908edd6, type: 3}
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e470c0e17404842bdb8cb56be9dcd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scale: 0.6
+  scale: 0.8
 --- !u!50 &6649937558935605663
 Rigidbody2D:
   serializedVersion: 4
@@ -450,7 +450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5509305661840162658, guid: 93493751bafa07b4ebec5bc245d5d2b4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 5509305661840162658, guid: 93493751bafa07b4ebec5bc245d5d2b4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -494,6 +494,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93493751bafa07b4ebec5bc245d5d2b4, type: 3}
+--- !u!1 &2428297859648585745 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5509305661840162670, guid: 93493751bafa07b4ebec5bc245d5d2b4, type: 3}
+  m_PrefabInstance: {fileID: 7910555457968013183}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2428297859648585757 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5509305661840162658, guid: 93493751bafa07b4ebec5bc245d5d2b4, type: 3}
