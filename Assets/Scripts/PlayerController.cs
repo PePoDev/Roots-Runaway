@@ -37,6 +37,20 @@ public class PlayerController : NetworkBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     public Transform template;
+    public GameObject effect;
+
+    public void ShowMe() {
+        if (IsOwner == false) return;
+
+        effect.SetActive(true);
+        StartCoroutine(delay());
+
+        IEnumerator delay()
+        {
+            yield return new WaitForSeconds(5f);
+            effect.SetActive(false);
+        }
+    }
   
 
     public static bool get;
@@ -79,6 +93,12 @@ public class PlayerController : NetworkBehaviour
         if(Input.GetKey(KeyCode.Space) && get){
             Debug.Log("use");
             get = false;
+        }
+
+        if (Input.GetKey(KeyCode.F))
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            Debug.Log("Total Player: " + players.Length);
         }
     }
 
