@@ -10,12 +10,9 @@ public class GameNetworkManger : NetworkBehaviour
 {
     public GameObject testPrefebs;
 
-    //Items managment
     public GameObject[] itemsPrefebs;
     public Transform[] itemsSpawnPoints;
     private int maxItem;
-
-    public LobbyUI lobby;
 
     public NetworkVariable<int> CurrentPlayerLive = new NetworkVariable<int>();
 
