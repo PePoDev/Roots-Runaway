@@ -93,25 +93,25 @@ public class LobbyUI : NetworkBehaviour
 
     private bool IsEveryoneReady()
     {
-        var readyPlayer = 0;
-        foreach (var player in lobbyPlayers)
-        {
-            if (player.IsReady) readyPlayer++;
-            timeCounter.text = $"{readyPlayer}/4";
-        }
+        // var readyPlayer = 0;
+        // foreach (var player in lobbyPlayers)
+        // {
+        //     if (player.IsReady) readyPlayer++;
+        //     timeCounter.text = $"{readyPlayer}/4";
+        // }
 
-        if (lobbyPlayers.Count < 2)
-        {
-            return false;
-        }
+        // if (lobbyPlayers.Count < 2)
+        // {
+        //     return false;
+        // }
 
-        foreach (var player in lobbyPlayers)
-        {
-            if (!player.IsReady)
-            {
-                return false;
-            }
-        }
+        // foreach (var player in lobbyPlayers)
+        // {
+        //     if (!player.IsReady)
+        //     {
+        //         return false;
+        //     }
+        // }
 
         return true;
     }
@@ -213,6 +213,7 @@ public class LobbyUI : NetworkBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        if (IsServer) 
         StartGameServerRpc();
     }
 }

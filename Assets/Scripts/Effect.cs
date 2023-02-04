@@ -28,7 +28,7 @@ public class Effect : MonoBehaviour
         if (other.gameObject.CompareTag("StunItem"))
         {
             StartEffect(EffectType.Stun);
-            anim.Anim.Play("DefenseHit");
+            //anim.Anim.Play("DefenseHit");
             Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("SpeedItem"))

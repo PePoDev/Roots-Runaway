@@ -6,7 +6,7 @@ using UnityEngine;
 public class anim : NetworkBehaviour
 {
     public Animator m_Animator;
-    public static Animator Anim;
+    public Animator Anim;
     
     // Start is called before the first frame update
     void Start()
