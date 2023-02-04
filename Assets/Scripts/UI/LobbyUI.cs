@@ -26,6 +26,7 @@ public struct LobbyPlayerState : INetworkSerializable, IEquatable<LobbyPlayerSta
         serializer.SerializeValue(ref ClientId);
         serializer.SerializeValue(ref IsReady);
         serializer.SerializeValue(ref PlayerName);
+        serializer.SerializeValue(ref SeletedCharacterId);
     }
 
     public bool Equals(LobbyPlayerState other)
@@ -40,12 +41,22 @@ public class LobbyUI : NetworkBehaviour
     public LobbyPlayerCard[] lobbyPlayerCards;
     public Toggle isReadyToggle;
     public TMP_Text timeCounter;
+    public TMP_Text room_key;
 
     private NetworkList<LobbyPlayerState> lobbyPlayers;
+    public GameObject[] AllCharacterModel;
 
     private void Awake()
     {
         lobbyPlayers = new NetworkList<LobbyPlayerState>();
+
+        var ips = PlayerPrefs.GetString("ServerIP").Split(".");
+        foreach (var number in ips)
+        {
+            var code = int.Parse(number).ToString("X");
+            if (code.Length == 1) code = "0" + code;
+            room_key.text += code;
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -82,6 +93,13 @@ public class LobbyUI : NetworkBehaviour
 
     private bool IsEveryoneReady()
     {
+        var readyPlayer = 0;
+        foreach (var player in lobbyPlayers)
+        {
+            if (player.IsReady) readyPlayer++;
+            timeCounter.text = $"{readyPlayer}/4";
+        }
+
         if (lobbyPlayers.Count < 4)
         {
             return false;
@@ -146,7 +164,7 @@ public class LobbyUI : NetworkBehaviour
     {
         if (serverRpcParams.Receive.SenderClientId != NetworkManager.Singleton.LocalClientId) { return; }
 
-        if (!IsEveryoneReady()) { return; }
+        //if (!IsEveryoneReady()) { return; }
 
         ServerGameNetPortal.Instance.StartGame();
     }
