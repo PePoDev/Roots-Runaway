@@ -9,6 +9,8 @@ TagManager:
   - SlowItem
   - LightningItem
   - ActiveStunItem
+  - DeathZone
+  - winable
   layers:
   - Default
   - TransparentFX
