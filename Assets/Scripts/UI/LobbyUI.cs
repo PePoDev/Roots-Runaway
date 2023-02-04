@@ -213,8 +213,7 @@ public class LobbyUI : NetworkBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        if (IsServer) 
-        StartGameServerRpc();
+        if (IsServer) StartGameServerRpc();
     }
 }
 
