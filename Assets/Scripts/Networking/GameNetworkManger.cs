@@ -8,6 +8,12 @@ public class GameNetworkManger : NetworkBehaviour
 
 {
     public GameObject testPrefebs;
+
+    //Items managment
+    public GameObject[] itemsPrefebs;
+    public Transform[] itemsSpawnPoints;
+    private int maxItem;
+
     public LobbyUI lobby;
 
     public NetworkVariable<int> CurrentPlayerLive = new NetworkVariable<int>();
@@ -24,6 +30,8 @@ public class GameNetworkManger : NetworkBehaviour
         if (NetworkManager.Singleton.IsServer)
         {
             //PlayerServerCharacter
+            maxItem = itemsPrefebs.Length;
+            StartCoroutine(SpawnItem());
 
             foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
             {
@@ -45,19 +53,31 @@ public class GameNetworkManger : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        if (IsServer)
+        {
+            CurrentPlayerLive.OnValueChanged -= OnSomeValueChanged;
+        }
         base.OnNetworkDespawn();
-        CurrentPlayerLive.OnValueChanged -= OnSomeValueChanged;
 
     }
+
+    ///// <summary>
+    ///// Client and Server side
+    ///// INetworkPrefabInstanceHandler.Destroy implementation
+    ///// </summary>
+    //public void Destroy(NetworkObject networkObject)
+    //{
+    //   Debug.Log("Destroy");    
+    //}
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     private void OnSomeValueChanged(int previous, int current)
@@ -70,4 +90,22 @@ public class GameNetworkManger : NetworkBehaviour
         Debug.Log("Spawned PlayerID:" + clientId.ToString());
         go.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
     }
+
+    private IEnumerator SpawnItem(){
+        while (true) {
+        yield return new WaitForSeconds(15f);
+            TestSpawnItemsClientRpc(UnityEngine.Random.Range(0, maxItem), UnityEngine.Random.Range(0, itemsSpawnPoints.Length));
+        }
+    }
+
+    [ClientRpc]
+    private void TestSpawnItemsClientRpc(int  item, int sp) {
+        GameObject obect = Instantiate(itemsPrefebs[item]
+        , itemsSpawnPoints[sp]);
+
+        Debug.Log(obect.tag);
+        obect.GetComponent<NetworkObject>().Spawn();
+
+    }
+
 }
