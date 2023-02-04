@@ -22,24 +22,24 @@ public class anim : NetworkBehaviour
         if(Input.GetKeyDown(KeyCode.S)){
             
             Anim.Play("Throw");
-            transform.rotation = Quaternion.Euler(0f,0,0);
+            transform.rotation = Quaternion.Euler(0,180,0);
         }
         else if(Input.GetKeyDown(KeyCode.D)){
             
             Anim.Play("Attack01");
-            transform.rotation = Quaternion.Euler(0f,-90,-180);
+            transform.rotation = Quaternion.Euler(0,90,0);
          
         }
         else if(Input.GetKeyDown(KeyCode.A)){
             
             Anim.Play("Attack01");
-            transform.rotation = Quaternion.Euler(0f,90,-180);
+            transform.rotation = Quaternion.Euler(0,-90,0);
          
         }
         else if(Input.GetKeyDown(KeyCode.W)){
             
             Anim.Play("Throw");
-            transform.rotation = Quaternion.Euler(-180,-180,0f);
+            transform.rotation = Quaternion.Euler(0,0,0);
          
         }
         
