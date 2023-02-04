@@ -8,6 +8,7 @@ public class GameNetworkManger : NetworkBehaviour
 
 {
     public GameObject testPrefebs;
+    public LobbyUI lobby;
 
     public NetworkVariable<int> CurrentPlayerLive = new NetworkVariable<int>();
 
