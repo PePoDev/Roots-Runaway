@@ -40,7 +40,6 @@ public class PlayerController : NetworkBehaviour
     public Transform template;
     public GameObject effect;
 
-    private GameNetworkManger gameNetworkManger;
     private bool skillIsReady = false, eyeIsReady = true;
     private int eyeCooldown = 30;
 
@@ -66,8 +65,6 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        gameNetworkManger = GameObject.Find("Game Manager").GetComponent<GameNetworkManger>();
-
         var clientId = OwnerClientId;
 
         Debug.Log("PlayerController id: " + clientId.ToString());
@@ -122,11 +119,12 @@ public class PlayerController : NetworkBehaviour
         {
             yield return new WaitForSeconds(1f);
             eyeCooldown--;
-            gameNetworkManger.UpdateEyeCoolDown(eyeCooldown);
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().UpdateEyeCoolDown(eyeCooldown);
         }
 
-        gameNetworkManger.UpdateEyeCoolDown(eyeCooldown);
+        GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().UpdateEyeCoolDown(eyeCooldown);
         eyeIsReady = true;
+        eyeCooldown = 30;
     }
 
     void FixedUpdate()
