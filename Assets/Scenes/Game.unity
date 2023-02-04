@@ -217,7 +217,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87645ec7515a48e6b532b56287ab8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testPrefebs: {fileID: 6649937558935605665, guid: 83803772bacfa4a3fb84e340a89763e3, type: 3}
+  playerPrefeb: {fileID: 8955979817802665964, guid: f9b8c1c0f2ead4bab90fdb9e8dd18d5a, type: 3}
+  AllCharacterModel:
+  - {fileID: 4586295932603434507, guid: 9585e6d6bfa9516469407dd87ee17dd2, type: 3}
+  - {fileID: 2035083545422830241, guid: ba7c124f48cd34a48941728ec908edd6, type: 3}
+  - {fileID: 4968077568377001006, guid: 441b582e73489f34ba5fab89d2febe57, type: 3}
+  - {fileID: 7858498754750678171, guid: 838b594956260bd418ece625eced6b0e, type: 3}
+  - {fileID: 2194860951329592867, guid: 65dbe5d29703bd044a4405a68eb042bb, type: 3}
+  - {fileID: 6775807783677666141, guid: a35bb5ac564c7b64782050fc21b8aeaf, type: 3}
+  - {fileID: 1238063219696232298, guid: 01dcdf60c1d6fa34ebc7e5919798b766, type: 3}
+  - {fileID: 6157470204858995813, guid: c0e55454a50a4a442b052356cf5b2689, type: 3}
   CurrentPlayerLive:
     m_InternalValue: 0
   m_PlayerSpawnPoints:
