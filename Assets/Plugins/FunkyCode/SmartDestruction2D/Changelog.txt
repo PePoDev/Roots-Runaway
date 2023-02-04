@@ -1,0 +1,47 @@
+﻿### Beta 1.0.5 - 28.10.2019
+[ADDED] Tilemap Support
+[ADDED] Unity 2019 Support
+[CHANGED] Improved Performance 
+
+
+### Beta 1.0.4 - 05.11.2018
+
+[ADDED] SpriteShape Support (Unity 2018.1 or higher)
+[ADDED] Added Complex Brush Controller Size
+[FIXED] Destruction2DController Layers Serialization
+[FIXED] Sprite Pixels per Unit did not affect Destruction2D object
+[INFO] Discord Channel
+
+
+### Beta 1.0.3 - 30.10.2018
+
+[FIXED] Issues when scaling sprite
+[FIXED] Controller "Enable Visuals" checkbox did not work properly
+[FIXED] Edge artifacts on sprites due to the texture filtering
+[ADDED] Complex Brush Controller type
+[ADDED] Polygon Brush Controller type
+
+
+### Beta 1.0.2 - 26.10.2018
+
+[ADDED] Demo 5 - Anchors
+[ADDED] Demo 6 - Modifiers
+[ADDED] Mouse scroll to change change demo controller size
+[ADDED] Anchor Events Handling
+[ADDED] Destruction Split Limit
+[ADDED] Destruction2D Component "Center of Mass" after split
+[ADDED] Destruction2DAnchors Component to attach objects to anchor colliders
+
+
+### Beta 1.0.1 - 23.10.2018
+
+[ADDED] Sprite Modifiers
+[ADDED] Destruction2DManager Component
+[ADDED] Destruction2DController can apply modifiers on sprites
+[CHANGED] Impoved performance for Sprites without colliders
+[CHANGED] Expanded Demo 3 to use Modifiers
+
+
+### Beta 1.0.0 - 18.10.2018
+
+ [INFO] Initial beta release 
