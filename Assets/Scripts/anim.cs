@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class anim : MonoBehaviour
+public class anim : NetworkBehaviour
 {
     public Animator m_Animator;
     public static Animator Anim;
@@ -17,6 +18,7 @@ public class anim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner) return;
         if(Input.GetKeyDown(KeyCode.S)){
             
             Anim.Play("Throw");

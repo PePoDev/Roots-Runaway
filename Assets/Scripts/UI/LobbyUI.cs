@@ -100,7 +100,7 @@ public class LobbyUI : NetworkBehaviour
             timeCounter.text = $"{readyPlayer}/4";
         }
 
-        if (lobbyPlayers.Count < 4)
+        if (lobbyPlayers.Count < 2)
         {
             return false;
         }

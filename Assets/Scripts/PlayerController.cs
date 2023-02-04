@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public float moveSpeed;
     public float currentSpeed;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (!IsOwner) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         if(Input.GetKey(KeyCode.Space) && get){
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
         currentSpeed = (defaultSpeed + buffSpeed) * multipySpeed;
         rb.MovePosition(rb.position + movement * currentSpeed * Time.fixedDeltaTime);
     }
