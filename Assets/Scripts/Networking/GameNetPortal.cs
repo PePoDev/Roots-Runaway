@@ -4,6 +4,45 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public class DisconnectReason
+{
+    public ConnectStatus Reason { get; private set; } = ConnectStatus.Undefined;
+
+    public void SetDisconnectReason(ConnectStatus reason)
+    {
+        Reason = reason;
+    }
+
+    public void Clear()
+    {
+        Reason = ConnectStatus.Undefined;
+    }
+
+    public bool HasTransitionReason => Reason != ConnectStatus.Undefined;
+}
+
+
+[Serializable]
+public class ConnectionPayload
+{
+    public string clientGUID;
+    public int clientScene = -1;
+    public string playerName;
+    public int seletedCharacterId = 0;
+
+}
+
+public enum ConnectStatus
+{
+    Undefined,
+    Success,
+    ServerFull,
+    GameInProgress,
+    LoggedInAgain,
+    UserRequestedDisconnect,
+    GenericDisconnect
+}
+
 public class GameNetPortal : MonoBehaviour
 {
     public static GameNetPortal Instance => instance;

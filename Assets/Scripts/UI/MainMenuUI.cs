@@ -22,6 +22,9 @@ public class MainMenuUI : MonoBehaviour
 
     public void Start()
     {
+        selectedCharacterID = UnityEngine.Random.Range(0, 8);
+        AllCharacterModel[selectedCharacterID].SetActive(true);
+
         if (PlayerPrefs.HasKey("PlayerName"))
         {
             displayNameInputField.text = PlayerPrefs.GetString("PlayerName");
