@@ -29,13 +29,13 @@ public class Effect : MonoBehaviour
         {
             StartEffect(EffectType.Stun);
             //anim.Anim.Play("DefenseHit");
-            Destroy(other.gameObject);
+            // Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("SpeedItem"))
         {
             StartEffect(EffectType.Speed);
            
-            Destroy(other.gameObject);
+            // Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("SlowItem"))
         {
@@ -43,7 +43,7 @@ public class Effect : MonoBehaviour
             StartEffect(EffectType.Slow);
 
 
-            Destroy(other.gameObject);
+            // Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("LightningItem"))
         {
@@ -52,7 +52,7 @@ public class Effect : MonoBehaviour
 
 
 
-            Destroy(other.gameObject);
+            // Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("ActiveStunItem"))
         {
@@ -60,7 +60,7 @@ public class Effect : MonoBehaviour
 
 
 
-            Destroy(other.gameObject);
+            // Destroy(other.gameObject);
         }
     }
 
