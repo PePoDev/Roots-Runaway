@@ -6,9 +6,21 @@ public class SlideDown : MonoBehaviour
 {
     public float speed;
 
-    // Update is called once per frame
-    void Update()
+    private bool afterDelay;
+
+    private void Start()
     {
-        transform.Translate(0, speed * Time.deltaTime, 0);
+        StartCoroutine(delay());
+    }
+
+    private void Update()
+    {
+        if (afterDelay) transform.Translate(0, speed * Time.deltaTime, 0);
+    }
+
+    private IEnumerator delay()
+    {
+        yield return new WaitForSeconds(5f);
+        afterDelay = true;
     }
 }

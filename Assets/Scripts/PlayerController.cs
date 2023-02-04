@@ -88,4 +88,12 @@ public class PlayerController : NetworkBehaviour
         currentSpeed = (defaultSpeed + buffSpeed) * multipySpeed;
         rb.MovePosition(rb.position + movement * currentSpeed * Time.fixedDeltaTime);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "DeathZone")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
