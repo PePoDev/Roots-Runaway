@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class anim : NetworkBehaviour
 {
-    public Animator Anim;
-  
+    public Animator m_Animator;
+    public static Animator Anim;
     
     // Start is called before the first frame update
     void Start()
     {
+        Anim = m_Animator;
         // Anim = GetComponent<Animator>();
     }
 

@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameNetworkManger : NetworkBehaviour
 
 {
-    public GameObject playerPrefeb;
-    public GameObject[] AllCharacterModel;
+    public GameObject testPrefebs;
+    public LobbyUI lobby;
 
     public NetworkVariable<int> CurrentPlayerLive = new NetworkVariable<int>();
 
@@ -24,7 +24,6 @@ public class GameNetworkManger : NetworkBehaviour
         if (NetworkManager.Singleton.IsServer)
         {
             //PlayerServerCharacter
-            //Debug.Log("ServerGameNetPortal: "+ServerGameNetPortal.Instance.AllCharacterModel.Length.ToString());
 
             foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
             {
@@ -67,15 +66,8 @@ public class GameNetworkManger : NetworkBehaviour
     }
 
     void SpawnPlayer(ulong clientId, Transform pos) {
-        var playerData = ServerGameNetPortal.Instance.GetPlayerData(clientId);
-        var model = AllCharacterModel[playerData.Value.SeletedCharacterId];
-
-
-        var newPlayer = Instantiate(playerPrefeb, pos.position, pos.rotation);
-        var newPlayerCharacter = Instantiate(model, newPlayer.transform);
-        newPlayer.GetComponent<anim>().Anim = newPlayerCharacter.GetComponent<Animator>();
-        //newPlayerCharacter.transform.parent = newPlayer.transform;
+        GameObject go = Instantiate(testPrefebs,pos.position, pos.rotation);
         Debug.Log("Spawned PlayerID:" + clientId.ToString());
-        newPlayerCharacter.GetComponentInParent<NetworkObject>().SpawnAsPlayerObject(clientId);
+        go.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
     }
 }
