@@ -2018,7 +2018,7 @@ GameObject:
   - component: {fileID: 1902114832644586960}
   - component: {fileID: 5513962338257332138}
   m_Layer: 0
-  m_Name: DefaultCharacterMesh
+  m_Name: Player7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

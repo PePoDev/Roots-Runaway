@@ -61,12 +61,10 @@ public class ClientGameNetPortal : MonoBehaviour
             clientScene = SceneManager.GetActiveScene().buildIndex,
             playerName = PlayerPrefs.GetString("PlayerName"),
             seletedCharacterId = PlayerPrefs.GetInt("SeletedCharacterId")
-
-
         }); ;
 
         byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
-
+        Debug.Log("Payload: " + payload);
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 
