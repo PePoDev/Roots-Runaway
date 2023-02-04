@@ -111,8 +111,15 @@ public class PlayerController : NetworkBehaviour
             }
             Debug.Log("Total Player: " + players.Length);
         }
+        if (Input.GetKey(KeyCode.X))
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            // TOOD: check player in range
+            var target = players[0].GetComponent<NetworkObject>().NetworkObjectId;
+            Debug.Log("Player Id: " + target.ToString());
+            UpdateTargetSpeedClientRpc(target);
+        }
     }
-
     private IEnumerator startDelayEyeCooldown()
     {
         while (eyeCooldown > 0)
@@ -140,5 +147,28 @@ public class PlayerController : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    private void AddSpeed() {
+        multipySpeed += 0.2f;
+    }
+
+    [ClientRpc]
+    private void UpdateTargetSpeedClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId == this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(3f);
+                buffSpeed = 0;
+            }
+
+        }
+
     }
 }
