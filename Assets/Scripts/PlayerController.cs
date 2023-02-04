@@ -73,8 +73,6 @@ public class PlayerController : NetworkBehaviour
     }
     void Update()
     {
-
-
         if (!IsOwner) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -82,9 +80,6 @@ public class PlayerController : NetworkBehaviour
             Debug.Log("use");
             get = false;
         }
-
-
-        
     }
 
     void FixedUpdate()
