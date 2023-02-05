@@ -32,18 +32,27 @@ public class GameNetworkManger : NetworkBehaviour
             maxItem = itemsPrefebs.Length;
             StartCoroutine(SpawnItem());
 
-            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
+            StartCoroutine(waitPlayer());
+            IEnumerator waitPlayer()
             {
-                SpawnPlayer(client.ClientId, m_PlayerSpawnPoints[client.ClientId]);
-                //var playerData = ServerGameNetPortal.Instance.GetPlayerData(client.ClientId);
-                //NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
-                //Debug.Log(client.OwnedObjects[0]);
-                //var playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(client.ClientId);
-                //Debug.Log(playerNetworkObject);
-                //Debug.Log(playerData.Value.PlayerName);
+                yield return new WaitForSeconds(3f);
+                foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
+                {
+                    SpawnPlayer(client.ClientId, m_PlayerSpawnPoints[client.ClientId]);
+                    //var playerData = ServerGameNetPortal.Instance.GetPlayerData(client.ClientId);
+                    //NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+                    //Debug.Log(client.OwnedObjects[0]);
+                    //var playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(client.ClientId);
+                    //Debug.Log(playerNetworkObject);
+                    //Debug.Log(playerData.Value.PlayerName);
+                }
+                InitialSpawnDone = true;
+                CurrentPlayerLive.Value = 4;
             }
 
-            CurrentPlayerLive.Value = 4;
+            
+
+            //NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += OnSynchronizeComplete;
         }
         else
         {
@@ -104,6 +113,18 @@ public class GameNetworkManger : NetworkBehaviour
         Debug.Log(obect.tag);
         //obect.GetComponent<NetworkObject>().Spawn();
 
+    }
+
+    void OnSynchronizeComplete(ulong clientId)
+    {
+        if (InitialSpawnDone && !ServerGameNetPortal.Instance.GetPlayerData(clientId).HasValue)
+        {
+            //somebody joined after the initial spawn. This is a Late Join scenario. This player may have issues
+            //(either because multiple people are late-joining at once, or because some dynamic entities are
+            //getting spawned while joining. But that's not something we can fully address by changes in
+            //ServerBossRoomState.
+            SpawnPlayer(clientId, m_PlayerSpawnPoints[clientId]);
+        }
     }
 
 }
