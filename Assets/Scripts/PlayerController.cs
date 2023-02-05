@@ -179,11 +179,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void AddSpeed()
-    {
-        multipySpeed += 0.2f;
-    }
-
     [ClientRpc]
     private void UpdateTargetSpeedClientRpc(ulong clientId)
     {
@@ -196,10 +191,40 @@ public class PlayerController : NetworkBehaviour
 
             IEnumerator delay()
             {
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(2f);
                 buffSpeed = 0;
             }
 
+        }
+
+    }
+
+    [ClientRpc]
+    private void LightingEffectClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId != this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = 0;
+            }
+
+        }
+
+    }
+
+    [ServerRpc]
+    private void DestoryPlayerObject(ulong clientId) {
+        if (IsServer)
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            //Destroy(players);
         }
     }
 }
