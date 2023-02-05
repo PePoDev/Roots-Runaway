@@ -72,7 +72,12 @@ public class PlayerController : NetworkBehaviour
         //var playerData = ServerGameNetPortal.Instance.GetPlayerData(clientId);
 
         var model = AllCharacterModel[UnityEngine.Random.Range(0, 8)];
-
+        if (IsLocalPlayer) {
+            Debug.Log("NetworkManager.Singleton.LocalClientId: " + NetworkManager.Singleton.LocalClientId);
+            //Debug.Log("gameObject.GetComponent<NetworkObject>().NetworkObjectId: " + gameObject.GetComponent<NetworkObject>().NetworkObjectId);
+            Debug.Log("OwnerClientId: " + OwnerClientId);
+            Debug.Log("NetworkObjectId: " + NetworkObjectId);
+        };
         var parent = template.parent;
 
         var newPlayerCharacter = Instantiate(model, template.transform.position, template.transform.rotation, parent);
@@ -106,7 +111,7 @@ public class PlayerController : NetworkBehaviour
         {
             if (targetPlayer == null) return;
             
-            Debug.Log("Use skill: "+ skillName);
+            Debug.Log("Use skill: "+ skillName + " on targetPlayer OwnerClientId: " + targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
             switch (skillName)
             {
                 case "ActiveStunItem":
@@ -226,6 +231,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void SlowClientRpc(ulong clientId)
     {
+        Debug.Log("SlowClientRpc Target ID: " + clientId.ToString() + " OwnerClientId :" + OwnerClientId);
         if (clientId == OwnerClientId)
         {
             buffSpeed = (defaultSpeed*0.5f) * -1;
@@ -243,6 +249,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void LightingEffectClientRpc(ulong clientId)
     {
+        Debug.Log("LightingEffectClientRpc Target ID: " + clientId.ToString() + " OwnerClientId :" + OwnerClientId);
         if (clientId == OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
@@ -268,7 +275,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void StunClientRpc(ulong clientId)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        Debug.Log("StunClientRpc Target ID: " + clientId.ToString() + " OwnerClientId :" + OwnerClientId);
         if (clientId == OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
@@ -287,7 +294,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void StunAllClientRpc(ulong clientId)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        Debug.Log("StunAllClientRpc Target ID: " + clientId.ToString()+ " OwnerClientId :"+ OwnerClientId);
         if (clientId != OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
