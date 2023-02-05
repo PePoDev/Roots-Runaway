@@ -143,12 +143,44 @@ public class PlayerController : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "DeathZone")
+        if (IsOwner == false) return;
+
+        Debug.Log("Hit :" + collision.tag);
+
+        var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
+        if (collision.gameObject.CompareTag("DeathZone"))
         {
-            Destroy(gameObject);
+
+        }
+        else if (collision.gameObject.CompareTag("StunItem"))
+        {
+            ui.skill.overrideSprite = ui.stun_skill;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("SpeedItem"))
+        {
+            ui.skill.overrideSprite = ui.speed_skill;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("SlowItem"))
+        {
+            ui.skill.overrideSprite = ui.slow_skill;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("LightningItem"))
+        {
+            ui.skill.overrideSprite = ui.lighting_skill;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("ActiveStunItem"))
+        {
+            ui.skill.overrideSprite = ui.stun_skill;
+            Destroy(collision.gameObject);
         }
     }
-    private void AddSpeed() {
+
+    private void AddSpeed()
+    {
         multipySpeed += 0.2f;
     }
 
@@ -169,6 +201,5 @@ public class PlayerController : NetworkBehaviour
             }
 
         }
-
     }
 }

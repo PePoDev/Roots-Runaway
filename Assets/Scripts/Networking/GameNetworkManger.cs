@@ -99,11 +99,10 @@ public class GameNetworkManger : NetworkBehaviour
 
     [ClientRpc]
     private void TestSpawnItemsClientRpc(int  item, int sp) {
-        GameObject obect = Instantiate(itemsPrefebs[item]
-        , itemsSpawnPoints[sp]);
+        GameObject obect = Instantiate(itemsPrefebs[item], itemsSpawnPoints[sp], true);
 
         Debug.Log(obect.tag);
-        obect.GetComponent<NetworkObject>().Spawn();
+        //obect.GetComponent<NetworkObject>().Spawn();
 
     }
 
