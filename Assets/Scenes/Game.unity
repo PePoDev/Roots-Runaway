@@ -1855,7 +1855,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1101614580}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2342,7 +2342,9 @@ MonoBehaviour:
   active_stun_skill: {fileID: 21300000, guid: 9f57a8adac99e4526a1986646a3be29a, type: 3}
   speed_skill: {fileID: 21300000, guid: 44f2803dad0404cbeb9ee038d70da104, type: 3}
   slow_skill: {fileID: 21300000, guid: 3c6f5b7a54bd84489ba7d655c5b7b812, type: 3}
-  lighting_skill: {fileID: 21300000, guid: c928ad39b3a514502b47fb7e488202d0, type: 3}
+  lighting_skill: {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
+  win: {fileID: 2105513955}
+  lose: {fileID: 820283128}
 --- !u!4 &977258747
 Transform:
   m_ObjectHideFlags: 0
@@ -2673,7 +2675,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &1101614580
 RectTransform:
@@ -2689,8 +2691,8 @@ RectTransform:
   m_Children:
   - {fileID: 398409156}
   - {fileID: 1864187834}
-  - {fileID: 820283129}
   - {fileID: 2105513956}
+  - {fileID: 820283129}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4667,7 +4669,7 @@ RectTransform:
   m_Children:
   - {fileID: 1937297219}
   m_Father: {fileID: 1101614580}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

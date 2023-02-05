@@ -89,6 +89,16 @@ public class PlayerController : NetworkBehaviour
         }
 
     }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        if (IsOwner == false) return;
+        Debug.Log("OnDestroy clientID: " + gameObject.GetComponent<NetworkObject>().NetworkObjectId);
+        GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().lose.SetActive(true);
+    }
+
     void Update()
     {
         if (!IsOwner) return;
@@ -98,6 +108,7 @@ public class PlayerController : NetworkBehaviour
         
         if (Input.GetKey(KeyCode.Space) && skillName != "")
         {
+            Debug.Log("Use skill: "+ skillName);
             if (targetPlayer == null)
             {
                 return;
@@ -105,14 +116,17 @@ public class PlayerController : NetworkBehaviour
             switch (skillName)
             {
                 case "ActiveStunItem":
-                        break;
+                    StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    break;
                 case "LightningItem":
+                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
                 case "SlowItem":
+                    SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
             }
             var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
-            ui.skill.overrideSprite = ui.slow_skill;
+            ui.skill.overrideSprite = ui.no_skill;
             skillName = "";
         }
 
@@ -158,11 +172,11 @@ public class PlayerController : NetworkBehaviour
         var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
         if (collision.gameObject.CompareTag("DeathZone"))
         {
-            // DestoryPlayerObjectServerRpc(hitId);
+            DestoryPlayerObjectServerRpc(gameObject.GetComponent<NetworkObject>().NetworkObjectId);
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {
-            //Stun
+            StunAllClientRpc(gameObject.GetComponent<NetworkObject>().NetworkObjectId);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("SpeedItem"))
@@ -225,32 +239,55 @@ public class PlayerController : NetworkBehaviour
         multipySpeed += 0.2f;
     }
 
-
     [ClientRpc]
-    private void UpdateTargetSpeedClientRpc(ulong clientId)
+    private void SlowClientRpc(ulong clientId)
     {
         //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId == this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
-            buffSpeed = defaultSpeed * -1;
+            buffSpeed = (defaultSpeed*0.5f) * -1;
             Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
             StartCoroutine(delay());
 
             IEnumerator delay()
             {
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(5f);
                 buffSpeed = 0;
             }
-
         }
-
     }
 
     [ClientRpc]
     private void LightingEffectClientRpc(ulong clientId)
     {
         //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId != this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("LightingEffectClientRpc Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = 0;
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = defaultSpeed * -1;
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = 0;
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = defaultSpeed * -1;
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = 0;
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void StunClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
             buffSpeed = defaultSpeed * -1;
             Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
@@ -258,12 +295,29 @@ public class PlayerController : NetworkBehaviour
 
             IEnumerator delay()
             {
-                yield return new WaitForSeconds(0.8f);
+                yield return new WaitForSeconds(3f);
                 buffSpeed = 0;
             }
-
         }
+    }
 
+
+    [ClientRpc]
+    private void StunAllClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId != gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(3f);
+                buffSpeed = 0;
+            }
+        }
     }
 
     [ServerRpc]
@@ -278,6 +332,7 @@ public class PlayerController : NetworkBehaviour
                     GameObject.Find("Game Manager").GetComponent<GameNetworkManger>().CurrentPlayerLive.Value -= 1 ;
                 }
             }
+            
         }
     }
 }
