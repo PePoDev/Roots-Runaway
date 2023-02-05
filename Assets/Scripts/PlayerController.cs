@@ -110,13 +110,13 @@ public class PlayerController : NetworkBehaviour
             switch (skillName)
             {
                 case "ActiveStunItem":
-                     StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                     StunClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
                     break;
                 case "LightningItem":
-                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
                     break;
                 case "SlowItem":
-                     SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                     SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
                     break;
             }
             var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
@@ -175,7 +175,7 @@ public class PlayerController : NetworkBehaviour
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {
-            StunAllClientRpc(gameObject.GetComponent<NetworkObject>().NetworkObjectId);
+            StunAllClientRpc(gameObject.GetComponent<NetworkObject>().OwnerClientId);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("SpeedItem"))
@@ -226,7 +226,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void SlowClientRpc(ulong clientId)
     {
-        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId == OwnerClientId)
         {
             buffSpeed = (defaultSpeed*0.5f) * -1;
             Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
@@ -243,7 +243,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void LightingEffectClientRpc(ulong clientId)
     {
-        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId == OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
             Debug.Log("LightingEffectClientRpc Target ID: " + clientId.ToString());
@@ -269,7 +269,7 @@ public class PlayerController : NetworkBehaviour
     private void StunClientRpc(ulong clientId)
     {
         //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId == OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
             Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
@@ -288,7 +288,7 @@ public class PlayerController : NetworkBehaviour
     private void StunAllClientRpc(ulong clientId)
     {
         //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId != gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (clientId != OwnerClientId)
         {
             buffSpeed = defaultSpeed * -1;
             Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
