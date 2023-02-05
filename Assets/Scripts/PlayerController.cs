@@ -204,7 +204,7 @@ public class PlayerController : NetworkBehaviour
         }
         else if (collision.gameObject.CompareTag("PlayerArea"))
         {
-            targetPlayer = collision.gameObject;
+            targetPlayer = collision.gameObject.transform.parent;
         }
     }
 
