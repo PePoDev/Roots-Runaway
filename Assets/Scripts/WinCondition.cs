@@ -11,6 +11,7 @@ public class WinCondition : MonoBehaviour
         {
             Debug.Log("getwin");
             winButton.SetActive(true);
+            other.gameObject.SetActive(false);
         }
     }
     

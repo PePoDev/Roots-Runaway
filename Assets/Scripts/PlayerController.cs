@@ -158,7 +158,7 @@ public class PlayerController : NetworkBehaviour
         var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
         if (collision.gameObject.CompareTag("DeathZone"))
         {
-            DestoryPlayerObjectServerRpc(hitId);
+            // DestoryPlayerObjectServerRpc(hitId);
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {

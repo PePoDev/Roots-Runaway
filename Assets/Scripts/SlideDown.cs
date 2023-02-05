@@ -15,7 +15,7 @@ public class SlideDown : MonoBehaviour
 
     private void Update()
     {
-        if (afterDelay) transform.Translate(0, speed * Time.deltaTime, 0);
+        if (afterDelay) transform.Translate(0, speed * (Time.deltaTime * 2), 0);
     }
 
     private IEnumerator delay()
