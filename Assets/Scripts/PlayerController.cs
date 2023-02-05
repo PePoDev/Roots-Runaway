@@ -158,7 +158,7 @@ public class PlayerController : NetworkBehaviour
         var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
         if (collision.gameObject.CompareTag("DeathZone"))
         {
-
+            DestoryPlayerObjectServerRpc(hitId);
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {
@@ -221,12 +221,63 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    private void AddSpeed() {
+        multipySpeed += 0.2f;
+    }
+
+
+    [ClientRpc]
+    private void UpdateTargetSpeedClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId == this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(2f);
+                buffSpeed = 0;
+            }
+
+        }
+
+    }
+
+    [ClientRpc]
+    private void LightingEffectClientRpc(ulong clientId)
+    {
+        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        if (clientId != this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        {
+            buffSpeed = defaultSpeed * -1;
+            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+            StartCoroutine(delay());
+
+            IEnumerator delay()
+            {
+                yield return new WaitForSeconds(0.8f);
+                buffSpeed = 0;
+            }
+
+        }
+
+    }
+
     [ServerRpc]
-    private void DestoryPlayerObject(ulong clientId) {
+    private void DestoryPlayerObjectServerRpc(ulong targetID) {
         if (IsServer)
         {
             var players = GameObject.FindGameObjectsWithTag("Player");
-            //Destroy(players);
+            foreach (GameObject player in players) {
+                if (player.GetComponent<NetworkObject>().NetworkObjectId == targetID) {
+                    Destroy(player);
+                    Debug.Log("Server Destoryed PlayerID: "+ targetID.ToString());
+                    GameObject.Find("Game Manager").GetComponent<GameNetworkManger>().CurrentPlayerLive.Value -= 1 ;
+                }
+            }
         }
     }
 }
