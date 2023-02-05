@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class WinCondition : MonoBehaviour
 {
     public GameObject winButton;
+
     public void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -14,9 +15,10 @@ public class WinCondition : MonoBehaviour
             other.gameObject.SetActive(false);
         }
     }
-    
 
     public void tomenu(){
-        SceneManager.LoadScene("Menu");
+        GameNetPortal.Instance.RequestDisconnect();
+
+        //SceneManager.LoadScene("Menu");
     }
 }

@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject win, lose;
 
+    public Button skillBth, itemBth;
+
     private void Start()
     {
         skill.overrideSprite = no_skill;

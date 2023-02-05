@@ -109,30 +109,29 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKey(KeyCode.Space) && skillName != "")
         {
             Debug.Log("Use skill: "+ skillName);
-            if (targetPlayer == null)
-            {
-                return;
-            }
             switch (skillName)
             {
                 case "ActiveStunItem":
-                    StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    if (targetPlayer != null) StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
                 case "LightningItem":
-                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    if (targetPlayer != null) LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
                 case "SlowItem":
-                    SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    if (targetPlayer != null) SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
             }
             var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
             ui.skill.overrideSprite = ui.no_skill;
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().itemBth.interactable = false;
             skillName = "";
         }
 
         if (Input.GetKey(KeyCode.F) && eyeIsReady)
         {
             eyeIsReady = false;
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().UpdateEyeCoolDown(30);
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().skillBth.interactable = false;
             StartCoroutine(startDelayEyeCooldown());
             var players = GameObject.FindGameObjectsWithTag("Player");
             foreach (var p in players)
@@ -154,6 +153,7 @@ public class PlayerController : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().UpdateEyeCoolDown(eyeCooldown);
         eyeIsReady = true;
         eyeCooldown = 30;
+        GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().skillBth.interactable = true;
     }
 
     void FixedUpdate()
@@ -187,18 +187,21 @@ public class PlayerController : NetworkBehaviour
         else if (collision.gameObject.CompareTag("SlowItem"))
         {
             ui.skill.overrideSprite = ui.slow_skill;
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().itemBth.interactable = true;
             skillName = collision.tag;
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("LightningItem"))
         {
             ui.skill.overrideSprite = ui.lighting_skill;
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().itemBth.interactable = true;
             skillName = collision.tag;
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("ActiveStunItem"))
         {
-            ui.skill.overrideSprite = ui.stun_skill;
+            ui.skill.overrideSprite = ui.active_stun_skill;
+            GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>().itemBth.interactable = true;
             skillName = collision.tag;
             Destroy(collision.gameObject);
         }
@@ -217,21 +220,6 @@ public class PlayerController : NetworkBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             targetPlayer = null;
-        }
-    }
-
-    public void StunMe(ulong id)
-    {
-        Debug.Log($"Player {id} and OwnerID {OwnerClientId}");
-        if (OwnerClientId == id) return;
-
-        buffSpeed = defaultSpeed * -1;
-        StartCoroutine(delay());
-
-        IEnumerator delay()
-        {
-            yield return new WaitForSeconds(3f);
-            buffSpeed = 0;
         }
     }
 

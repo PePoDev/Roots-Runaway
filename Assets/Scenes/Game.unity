@@ -2345,6 +2345,8 @@ MonoBehaviour:
   lighting_skill: {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
   win: {fileID: 2105513955}
   lose: {fileID: 820283128}
+  skillBth: {fileID: 398409159}
+  itemBth: {fileID: 1864187835}
 --- !u!4 &977258747
 Transform:
   m_ObjectHideFlags: 0
@@ -4114,7 +4116,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1864187836}
   m_OnClick:
     m_PersistentCalls:
