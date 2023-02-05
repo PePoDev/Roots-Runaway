@@ -87,7 +87,6 @@ public class PlayerController : NetworkBehaviour
         {
             GetComponent<Meteor>().enabled = false;
         }
-
     }
 
     public override void OnDestroy()
@@ -103,22 +102,21 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner) return;
         
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        
         if (Input.GetKey(KeyCode.Space) && skillName != "")
         {
+            if (targetPlayer == null) return;
+            
             Debug.Log("Use skill: "+ skillName);
             switch (skillName)
             {
                 case "ActiveStunItem":
-                    if (targetPlayer != null) StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                     StunClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
                 case "LightningItem":
-                    if (targetPlayer != null) LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
                 case "SlowItem":
-                    if (targetPlayer != null) SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+                     SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
                     break;
             }
             var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
@@ -159,6 +157,10 @@ public class PlayerController : NetworkBehaviour
     void FixedUpdate()
     {
         if (!IsOwner) return;
+
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
         currentSpeed = (defaultSpeed + buffSpeed) * multipySpeed;
         rb.MovePosition(rb.position + movement * currentSpeed * Time.fixedDeltaTime);
     }
@@ -224,7 +226,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void SlowClientRpc(ulong clientId)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        Debug.Log("SlowClientRpc Target ID: " + clientId.ToString());
         if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
             buffSpeed = (defaultSpeed*0.5f) * -1;
@@ -242,7 +244,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void LightingEffectClientRpc(ulong clientId)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
+        Debug.Log("LightingEffectClientRpc Target ID: " + clientId.ToString());
         if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
             buffSpeed = defaultSpeed * -1;
