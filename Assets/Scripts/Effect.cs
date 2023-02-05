@@ -94,7 +94,7 @@ public class Effect : MonoBehaviour
 
     private IEnumerator StunCoroutine()
     {
-        PlayerController.get = true;
+        //PlayerController.get = true;
         Debug.Log("getStun");
         PlayerController.multipySpeed *= 0.00001f;
         yield return new WaitForSeconds(Stun.delay);
@@ -103,7 +103,7 @@ public class Effect : MonoBehaviour
 
     private IEnumerator SpeedCoroutine()
     {
-        PlayerController.get = true;
+        //PlayerController.get = true;
         Debug.Log("getSpeed");
         PlayerController.buffSpeed += (PlayerController.defaultSpeed * (Speed.speed - 1));
         yield return new WaitForSeconds(Speed.delay);
@@ -113,7 +113,7 @@ public class Effect : MonoBehaviour
 
     private IEnumerator SlowCoroutine()
     {
-        PlayerController.get = true;
+        //PlayerController.get = true;
         Debug.Log("getSlow");
         PlayerController.buffSpeed -= (PlayerController.defaultSpeed * Slow.speed);
         yield return new WaitForSeconds(Slow.delay);
@@ -124,7 +124,7 @@ public class Effect : MonoBehaviour
     private IEnumerator LightingCoroutine()
     {
         Debug.Log("getLighting");
-        PlayerController.get = true;
+        //PlayerController.get = true;
         for (int i = 0; i < Lightning.times; i++)
         {
             PlayerController.multipySpeed *= 0.00001f;
@@ -137,7 +137,7 @@ public class Effect : MonoBehaviour
 
     private IEnumerator ActiveStunCoroutine()
     {
-        PlayerController.get = true;
+        //PlayerController.get = true;
         Debug.Log("getStun");
         PlayerController.multipySpeed *= 0.00001f;
         yield return new WaitForSeconds(Stun.delay);

@@ -40,8 +40,10 @@ public class PlayerController : NetworkBehaviour
     public Transform template;
     public GameObject effect;
 
-    private bool skillIsReady = false, eyeIsReady = true;
+    private bool eyeIsReady = true;
     private int eyeCooldown = 30;
+    private string skillName = "";
+    private GameObject targetPlayer;
 
     public void ShowMe(ulong id)
     {
@@ -57,8 +59,6 @@ public class PlayerController : NetworkBehaviour
             effect.SetActive(false);
         }
     }
-
-    public static bool get;
 
     public GameObject[] AllCharacterModel;
     Vector2 movement;
@@ -92,12 +92,28 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if (!IsOwner) return;
+        
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        if (Input.GetKey(KeyCode.Space) && get)
+        
+        if (Input.GetKey(KeyCode.Space) && skillName != "")
         {
-            Debug.Log("use");
-            get = false;
+            if (targetPlayer == null)
+            {
+                return;
+            }
+            switch (skillName)
+            {
+                case "ActiveStunItem":
+                        break;
+                case "LightningItem":
+                    break;
+                case "SlowItem":
+                    break;
+            }
+            var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
+            ui.skill.overrideSprite = ui.slow_skill;
+            skillName = "";
         }
 
         if (Input.GetKey(KeyCode.F) && eyeIsReady)
@@ -110,14 +126,6 @@ public class PlayerController : NetworkBehaviour
                 p.GetComponent<PlayerController>().ShowMe(OwnerClientId);
             }
             Debug.Log("Total Player: " + players.Length);
-        }
-        if (Input.GetKey(KeyCode.X))
-        {
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            // TOOD: check player in range
-            var target = players[0].GetComponent<NetworkObject>().NetworkObjectId;
-            Debug.Log("Player Id: " + target.ToString());
-            UpdateTargetSpeedClientRpc(target);
         }
     }
     private IEnumerator startDelayEyeCooldown()
@@ -154,69 +162,63 @@ public class PlayerController : NetworkBehaviour
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {
-            ui.skill.overrideSprite = ui.stun_skill;
+            //Stun
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("SpeedItem"))
         {
-            ui.skill.overrideSprite = ui.speed_skill;
+            AddSpeed();
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("SlowItem"))
         {
             ui.skill.overrideSprite = ui.slow_skill;
+            skillName = collision.tag;
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("LightningItem"))
         {
             ui.skill.overrideSprite = ui.lighting_skill;
+            skillName = collision.tag;
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("ActiveStunItem"))
         {
             ui.skill.overrideSprite = ui.stun_skill;
+            skillName = collision.tag;
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("Player"))
+        {
+            targetPlayer = collision.gameObject;
+        }
     }
 
-    [ClientRpc]
-    private void UpdateTargetSpeedClientRpc(ulong clientId)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId == this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        if (IsOwner == false) return;
+
+        Debug.Log("Leave :" + collision.tag);
+
+        if (collision.gameObject.CompareTag("Player"))
         {
-            buffSpeed = defaultSpeed * -1;
-            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-            StartCoroutine(delay());
-
-            IEnumerator delay()
-            {
-                yield return new WaitForSeconds(2f);
-                buffSpeed = 0;
-            }
-
+            targetPlayer = null;
         }
-
     }
 
-    [ClientRpc]
-    private void LightingEffectClientRpc(ulong clientId)
+    public void StunMe(ulong id)
     {
-        //Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-        if (clientId != this.gameObject.GetComponent<NetworkObject>().NetworkObjectId)
+        Debug.Log($"Player {id} and OwnerID {OwnerClientId}");
+        if (OwnerClientId == id) return;
+
+        buffSpeed = defaultSpeed * -1;
+        StartCoroutine(delay());
+
+        IEnumerator delay()
         {
-            buffSpeed = defaultSpeed * -1;
-            Debug.Log("UpdateTargetSpeed Target ID: " + clientId.ToString());
-            StartCoroutine(delay());
-
-            IEnumerator delay()
-            {
-                yield return new WaitForSeconds(0.8f);
-                buffSpeed = 0;
-            }
-
+            yield return new WaitForSeconds(3f);
+            buffSpeed = 0;
         }
-
     }
 
     [ServerRpc]
