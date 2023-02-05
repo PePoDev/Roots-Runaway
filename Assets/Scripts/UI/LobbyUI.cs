@@ -93,14 +93,16 @@ public class LobbyUI : NetworkBehaviour
 
     private bool IsEveryoneReady()
     {
+        Debug.Log("Total player: " + lobbyPlayers.Count);
+
          var readyPlayer = 0;
         foreach (var player in lobbyPlayers)
         {
             if (player.IsReady) readyPlayer++;
-            timeCounter.text = $"{readyPlayer}/4";
+            timeCounter.text = $"{readyPlayer}/{lobbyPlayers.Count}";
         }
 
-        if (lobbyPlayers.Count < 2)
+        if (lobbyPlayers.Count < lobbyPlayers.Count)
         {
             return false;
         }

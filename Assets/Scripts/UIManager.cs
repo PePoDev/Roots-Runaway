@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public Sprite slow_skill;
     public Sprite lighting_skill;
 
+    public GameObject win, lose;
+
     private void Start()
     {
         skill.overrideSprite = no_skill;
