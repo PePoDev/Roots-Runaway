@@ -166,9 +166,6 @@ public class PlayerController : NetworkBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (IsOwner == false) return;
-
-        Debug.Log("Hit :" + collision.tag);
-
         var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
         if (collision.gameObject.CompareTag("DeathZone"))
         {
@@ -205,7 +202,7 @@ public class PlayerController : NetworkBehaviour
             skillName = collision.tag;
             Destroy(collision.gameObject);
         }
-        else if (collision.gameObject.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("PlayerArea"))
         {
             targetPlayer = collision.gameObject;
         }
@@ -214,10 +211,7 @@ public class PlayerController : NetworkBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (IsOwner == false) return;
-
-        Debug.Log("Leave :" + collision.tag);
-
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("PlayerArea"))
         {
             targetPlayer = null;
         }

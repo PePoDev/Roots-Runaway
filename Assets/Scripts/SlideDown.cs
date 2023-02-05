@@ -15,12 +15,18 @@ public class SlideDown : MonoBehaviour
 
     private void Update()
     {
-        if (afterDelay) transform.Translate(0, speed * (Time.deltaTime * 2), 0);
+        if (afterDelay) transform.Translate(0, speed * Time.deltaTime, 0);
     }
 
     private IEnumerator delay()
     {
         yield return new WaitForSeconds(5f);
         afterDelay = true;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(4f);
+            speed -= 0.2f;
+        }
     }
 }

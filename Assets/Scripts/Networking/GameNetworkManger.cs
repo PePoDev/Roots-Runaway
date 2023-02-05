@@ -101,8 +101,8 @@ public class GameNetworkManger : NetworkBehaviour
 
     private IEnumerator SpawnItem(){
         while (true) {
-        yield return new WaitForSeconds(15f);
-            TestSpawnItemsClientRpc(UnityEngine.Random.Range(0, maxItem), UnityEngine.Random.Range(0, itemsSpawnPoints.Length));
+            yield return new WaitForSeconds(5f + Random.Range(0, 5f));
+            TestSpawnItemsClientRpc(Random.Range(0, maxItem), Random.Range(0, itemsSpawnPoints.Length));
         }
     }
 
@@ -112,7 +112,6 @@ public class GameNetworkManger : NetworkBehaviour
 
         Debug.Log(obect.tag);
         //obect.GetComponent<NetworkObject>().Spawn();
-
     }
 
     void OnSynchronizeComplete(ulong clientId)
