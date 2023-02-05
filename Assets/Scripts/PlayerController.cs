@@ -226,7 +226,6 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void SlowClientRpc(ulong clientId)
     {
-        Debug.Log("SlowClientRpc Target ID: " + clientId.ToString());
         if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
             buffSpeed = (defaultSpeed*0.5f) * -1;
@@ -244,7 +243,6 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     private void LightingEffectClientRpc(ulong clientId)
     {
-        Debug.Log("LightingEffectClientRpc Target ID: " + clientId.ToString());
         if (clientId == gameObject.GetComponent<NetworkObject>().NetworkObjectId)
         {
             buffSpeed = defaultSpeed * -1;
