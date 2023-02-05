@@ -115,13 +115,13 @@ public class PlayerController : NetworkBehaviour
             switch (skillName)
             {
                 case "ActiveStunItem":
-                     StunClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
+                    sendEventServerRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId,1);
                     break;
                 case "LightningItem":
-                    LightingEffectClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
+                    sendEventServerRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId, 2);
                     break;
                 case "SlowItem":
-                     SlowClientRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId);
+                    sendEventServerRpc(targetPlayer.GetComponent<NetworkObject>().OwnerClientId, 3);
                     break;
             }
             var ui = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<UIManager>();
@@ -180,7 +180,7 @@ public class PlayerController : NetworkBehaviour
         }
         else if (collision.gameObject.CompareTag("StunItem"))
         {
-            StunAllClientRpc(gameObject.GetComponent<NetworkObject>().OwnerClientId);
+            sendEventServerRpc(gameObject.GetComponent<NetworkObject>().OwnerClientId, 4);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("SpeedItem"))
@@ -324,4 +324,25 @@ public class PlayerController : NetworkBehaviour
             
         }
     }
+
+    [ServerRpc]
+    private void sendEventServerRpc(ulong targetID,int skillNumber)
+    {
+        switch (skillNumber) {
+            case 1:
+                StunClientRpc(targetID);
+                break;
+            case 2:
+                LightingEffectClientRpc(targetID);
+                break;
+            case 3:
+                SlowClientRpc(targetID);
+                break;
+            case 4:
+                StunAllClientRpc(targetID);
+                break;
+
+        }
+    }
+
 }
